@@ -3,7 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show required;
 import 'package:flutter/services.dart';
 
-final channel = MethodChannel('itzam_socket_io');
+
 
 typedef void OnWS(String eventName, dynamic data);
 
@@ -17,6 +17,7 @@ class DEFAULT_EVENTS {
 
 /// class to manage the socketIO connection
 class SocketIO {
+  final channel = MethodChannel('itzam_socket_io');
   OnWS onWS;
 
   /// listener to catch incomming events

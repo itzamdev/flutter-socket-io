@@ -1,6 +1,6 @@
 name: itzam_socket_io
 description: Flutter plugin to connect with your socket-io server created with nodejs, to more info see the example.
-version: 0.1.0
+version: 0.1.1
 author: ITZAM DEVELOPMENT AND DESIGN <itzam.dev@gmail.com>
 homepage: https://github.com/itzamdev/flutter-socket-io
 
