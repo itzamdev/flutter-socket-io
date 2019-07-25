@@ -1,0 +1,33 @@
+PODS:
+  - Flutter (1.0.0)
+  - itzam_socket_io (0.0.1):
+    - Flutter
+    - Socket.IO-Client-Swift (~> 15.1.0)
+  - Socket.IO-Client-Swift (15.1.0):
+    - Starscream (~> 3.1)
+  - Starscream (3.1.0)
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - itzam_socket_io (from `.symlinks/plugins/itzam_socket_io/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Socket.IO-Client-Swift
+    - Starscream
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  itzam_socket_io:
+    :path: ".symlinks/plugins/itzam_socket_io/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  itzam_socket_io: 1c402dd8ceddc94f8549ee1d9f230592de6b83f3
+  Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
+  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
+
+PODFILE CHECKSUM: b6a0a141693093b304368d08511b46cf3d1d0ac5
+
+COCOAPODS: 1.7.3
