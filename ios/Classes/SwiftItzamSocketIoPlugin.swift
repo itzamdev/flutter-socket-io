@@ -14,13 +14,13 @@ public class SwiftItzamSocketIoPlugin: NSObject, FlutterPlugin, WSDelegate {
     }
     
     var channel: FlutterMethodChannel?
-    let ws = WS()
+    var ws:WS?
     
     
     public init(_ channel:FlutterMethodChannel) {
         super.init()
         self.channel = channel
-        self.ws.delegate = self
+        
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -35,27 +35,28 @@ public class SwiftItzamSocketIoPlugin: NSObject, FlutterPlugin, WSDelegate {
         switch call.method{
         case "connect":
             print("socketIO connecting")
-           
-            self.ws.connect(args: args!)// connect to ws
+            self.ws = WS()
+            self.ws?.delegate = self
+            self.ws?.connect(args: args!)// connect to ws
             result(nil)
             
             
         case "disconnect":
             print("socketIO disconnected")
-            self.ws.disconnect()//disconnect to ws
-            //self.ws = nil
+            self.ws?.disconnect()//disconnect to ws
+            self.ws = nil
             result(nil)
             
         case "on":
             let eventName: String = args?["eventName"] as! String
             print("socketIO eventName \(eventName)")
-            self.ws.on(eventName: eventName)
+            self.ws?.on(eventName: eventName)
             result(nil)
             
         case "emit":
             let eventName: String = args?["eventName"] as! String
             let data = args?["data"] as Any
-            self.ws.emit(eventName: eventName,dataTosend: data)
+            self.ws?.emit(eventName: eventName,dataTosend: data)
             
         default:
             result(FlutterError(code: "404", message: "No such method", details: nil))
