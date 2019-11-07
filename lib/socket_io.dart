@@ -4,7 +4,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show required;
 import 'package:flutter/services.dart';
 
-typedef void OnWS(String eventName, dynamic data);
 typedef void On(dynamic data);
 
 // ignore: camel_case_types
@@ -23,15 +22,13 @@ class SocketIO {
 
   Map<String, On> _events = Map();
 
-  OnWS onWS;
-
   SocketIO() {
     // ignore: missing_return
     channel.setMethodCallHandler((call) {
       if (call.method == 'incoming') {
         final String eventName = call.arguments['eventName'];
         final data = call.arguments['data'];
-
+        print("incomming eventName: $eventName");
         final event = _events[eventName];
 
         if (Platform.isIOS) {
@@ -80,9 +77,9 @@ class SocketIO {
         eventName != defaultEvents.connect &&
         eventName != defaultEvents.reconnect &&
         eventName != defaultEvents.disconnect) {
+      print("assigned: $eventName");
       await channel.invokeMethod("on", {"eventName": eventName});
     }
-
     _events[eventName] = callback;
   }
 
