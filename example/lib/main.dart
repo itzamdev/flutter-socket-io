@@ -5,10 +5,6 @@ import 'package:itzam_socket_io/itzam_socket_io.dart';
 
 void main() => runApp(MyApp());
 
-class MY_SOCKET_EVENTS {
-  static const onNotification = "on-notification";
-}
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -25,59 +21,31 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
   }
 
-  // listeners for socketIo
-  void onWS(String eventName, dynamic data) {
-    // catch your event names listeners
-
-    switch (eventName) {
-      case DEFAULT_EVENTS.connect:
-        print("connect");
-        setState(() {
-          status = "connected to socketIO server";
-        });
-        break;
-
-      case DEFAULT_EVENTS
-          .reconnect: // this is always called after the method  socketIO.disconnect()
-        print("reconnect");
-        setState(() {
-          status = "begins the reconnection process";
-        });
-        break;
-
-      case DEFAULT_EVENTS
-          .disconnect: // this is always called after the method  socketIO.disconnect()
-        print("disconnect");
-        setState(() {
-          status = "disconnected from socketIO server";
-        });
-        break;
-
-      case DEFAULT_EVENTS
-          .error: // this is always called after the method  socketIO.disconnect()
-        print("error ${data.toString()}");
-        setState(() {
-          status = "error ${data.toString()}";
-        });
-        break;
-
-      case MY_SOCKET_EVENTS.onNotification: // this is my own event listener
-        print("on-notification with data ${data.toString()}");
-        break;
-    }
-  }
-
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     //define query params
     final query = Map<String, dynamic>();
     query['token'] = "k123s_asks1221aksak";
+
+    socketIO.on(SocketIO.defaultEvents.connect, (data) {
+      setState(() {
+        status = "connected to socketIO server";
+      });
+    });
+
+    socketIO.on(SocketIO.defaultEvents.error, (data) {
+      print("error ${data.toString()}");
+      setState(() {
+        status = "error ${data.toString()}";
+      });
+    });
+
+    socketIO.on('on-notification', (data) {});
+
     socketIO.connect(host: "https://your-socket-io-host.com", query: query);
     //add listeners
-    socketIO.onWS = this.onWS;
     // next add your listeners with your event names
     //the eventNames "connect","disconnect" and "error" are added by default, you don't need to do socketIO.on("disconnect"), socketIO.on("connect"), socketIO.on("error");
-    socketIO.on(MY_SOCKET_EVENTS.onNotification); //
 
     // emit
 //    socketIO.emit(eventName: "myLocation", data: {
@@ -90,6 +58,12 @@ class _MyAppState extends State<MyApp> {
 //    Timer(Duration(seconds: 5), () {
 //      socketIO.disconnect();
 //    });
+  }
+
+  @override
+  void dispose() {
+    socketIO.disconnect();
+    super.dispose();
   }
 
   @override

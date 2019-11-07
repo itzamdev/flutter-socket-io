@@ -1,22 +1,52 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show required;
 import 'package:flutter/services.dart';
 
 typedef void OnWS(String eventName, dynamic data);
+typedef void On(dynamic data);
 
 // ignore: camel_case_types
-class DEFAULT_EVENTS {
-  static const connect = "connect";
-  static const disconnect = "disconnect";
-  static const reconnect = "reconnect";
-  static const error = "error";
+
+class SocketIODefaultEvents {
+  final connect = "connect";
+  final disconnect = "disconnect";
+  final reconnect = "reconnect";
+  final error = "error";
 }
 
 /// class to manage the socketIO connection
 class SocketIO {
   final channel = MethodChannel('itzam_socket_io');
+  static final defaultEvents = SocketIODefaultEvents();
+
+  Map<String, On> _events = Map();
+
   OnWS onWS;
+
+  SocketIO() {
+    // ignore: missing_return
+    channel.setMethodCallHandler((call) {
+      if (call.method == 'incoming') {
+        final String eventName = call.arguments['eventName'];
+        final data = call.arguments['data'];
+
+        final event = _events[eventName];
+
+        if (Platform.isIOS) {
+          event(data);
+        } else {
+          try {
+            final jsonObject = jsonDecode(data);
+            event(jsonObject);
+          } catch (e) {
+            event(data);
+          }
+        }
+      }
+    });
+  }
 
   /// listener to catch incomming events
 
@@ -36,25 +66,6 @@ class SocketIO {
 
     await channel.invokeMethod("connect",
         {'host': host, 'query': dynamicQuery, "params": queryParams});
-
-    // ignore: missing_return
-    channel.setMethodCallHandler((call) {
-      if (call.method == 'incoming') {
-        final String eventName = call.arguments['eventName'];
-        final data = call.arguments['data'];
-
-        if (Platform.isIOS) {
-          onWS(eventName, data);
-        } else {
-          try {
-            final jsonObject = jsonDecode(data);
-            onWS(eventName, jsonObject);
-          } catch (e) {
-            onWS(eventName, data);
-          }
-        }
-      }
-    });
   }
 
   /// disconnect from socketIO server
@@ -64,8 +75,15 @@ class SocketIO {
 
   /// add on even listener
   /// [eventName] String
-  on(String eventName) async {
-    await channel.invokeMethod("on", {"eventName": eventName});
+  Future<void> on(String eventName, Function(dynamic) callback) async {
+    if (eventName != defaultEvents.error &&
+        eventName != defaultEvents.connect &&
+        eventName != defaultEvents.reconnect &&
+        eventName != defaultEvents.disconnect) {
+      await channel.invokeMethod("on", {"eventName": eventName});
+    }
+
+    _events[eventName] = callback;
   }
 
   /// send data to your socketIO server
