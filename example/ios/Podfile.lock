@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/itzam_socket_io/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   itzam_socket_io: 1c402dd8ceddc94f8549ee1d9f230592de6b83f3
   Socket.IO-Client-Swift: 7cb44c0ffb86e158cee32d0642d30ec5fdcf8f61
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4

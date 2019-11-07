@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:itzam_socket_io/itzam_socket_io.dart';
 
 void main() => runApp(MyApp());
@@ -87,8 +86,6 @@ class _MyAppState extends State<MyApp> {
 //    });
 
     //   socketIO.disconnect(); // disconnect from socketIO server
-
-
 
 //    Timer(Duration(seconds: 5), () {
 //      socketIO.disconnect();

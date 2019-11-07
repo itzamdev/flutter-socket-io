@@ -3,8 +3,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show required;
 import 'package:flutter/services.dart';
 
-
-
 typedef void OnWS(String eventName, dynamic data);
 
 // ignore: camel_case_types
@@ -26,7 +24,7 @@ class SocketIO {
   /// [host] socket-io host
   /// [query] query params
   void connect({@required String host, Map<String, dynamic> query}) async {
-    var queryParams = "?";
+    var queryParams = "";
     var dynamicQuery = {};
     var index = 0;
     query.forEach((key, value) {

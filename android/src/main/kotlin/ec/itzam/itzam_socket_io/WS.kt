@@ -9,7 +9,6 @@ import java.lang.Exception
 import org.json.JSONObject
 
 
-
 class WS {
 
 
@@ -18,8 +17,13 @@ class WS {
 
     fun connect(host: String, query: String) {
 
+
         try {
-            socket = IO.socket("${host}${query}")
+            val options = IO.Options()
+            options.query = query
+            options.forceNew = true
+
+            socket = IO.socket(host, options)
             socket!!.connect()
 
             socket!!.on("connect") { args -> onWS!!.onWS("connect", "connected to SOCKET-IO server") }
@@ -27,8 +31,8 @@ class WS {
             socket!!.on("error") { args -> onWS!!.onWS("error", args[0].toString()) }
             socket!!.on("reconnect") { args -> onWS!!.onWS("reconnect", "begins the reconnection process") }
 
-        }catch (e:Exception){
-            Log.e("SOCCKET_IO:",e.message)
+        } catch (e: Exception) {
+            Log.e("SOCCKET_IO:", e.message)
         }
 
     }
@@ -36,12 +40,12 @@ class WS {
 
     fun emit(eventName: String, data: Any) {
         if (socket != null) {
-           try {
-               val jsonData = JSONObject(data.toString())
-               socket!!.emit(eventName, jsonData);
-           }catch (e: JSONException){
-               socket!!.emit(eventName, data);
-           }
+            try {
+                val jsonData = JSONObject(data.toString())
+                socket!!.emit(eventName, jsonData);
+            } catch (e: JSONException) {
+                socket!!.emit(eventName, data);
+            }
         }
     }
 
@@ -50,11 +54,12 @@ class WS {
     }
 
 
-    fun  disconnect(){
+    fun disconnect() {
         if (socket != null) {
             onWS!!.onWS("disconnected", "disconnected from your SOCKET-IO server")
             socket!!.off("off");
             socket!!.disconnect();
+            socket = null
         }
     }
 
