@@ -42,9 +42,11 @@ class WS {
         if (socket != null) {
             if (data is HashMap<*, *>) {
                 Log.i("WS:", "is hasMap")
-                socket!!.emit(eventName, data);
+                socket!!.emit(eventName, JSONObject(data));
             } else if (data is String) {
                 Log.i("WS:", "is string")
+                socket!!.emit(eventName, data);
+            } else {
                 socket!!.emit(eventName, data);
             }
         }
