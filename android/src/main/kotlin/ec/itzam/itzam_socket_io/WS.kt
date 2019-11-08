@@ -32,7 +32,7 @@ class WS {
             socket!!.on("reconnect") { args -> onWS!!.onWS("reconnect", "begins the reconnection process") }
 
         } catch (e: Exception) {
-            Log.e("SOCCKET_IO:", e.message)
+            Log.e("SOCKET_IO:", e.message)
         }
 
     }
@@ -40,15 +40,11 @@ class WS {
 
     fun emit(eventName: String, data: Any) {
         if (socket != null) {
-            try {
-
-                if (data is HashMap<*, *>) {
-                    socket!!.emit(eventName, data);
-                } else if (data is String) {
-                    socket!!.emit(eventName, data);
-                }
-
-            } catch (e: JSONException) {
+            if (data is HashMap<*, *>) {
+                Log.i("WS:", "is hasMap")
+                socket!!.emit(eventName, data);
+            } else if (data is String) {
+                Log.i("WS:", "is string")
                 socket!!.emit(eventName, data);
             }
         }
