@@ -41,8 +41,13 @@ class WS {
     fun emit(eventName: String, data: Any) {
         if (socket != null) {
             try {
-                val jsonData = JSONObject(data.toString())
-                socket!!.emit(eventName, jsonData);
+
+                if (data is HashMap<*, *>) {
+                    socket!!.emit(eventName, data);
+                } else if (data is String) {
+                    socket!!.emit(eventName, data);
+                }
+
             } catch (e: JSONException) {
                 socket!!.emit(eventName, data);
             }
