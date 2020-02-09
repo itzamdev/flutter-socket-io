@@ -55,16 +55,13 @@ class WS {
 
     fun on(eventName: String) {
 
-        socket!!.on(eventName, object : Emitter.Listener {
-            override fun call(vararg args: Any?) {
-                if (args[0] == null) {
-                    onWS!!.onWS(eventName, args[0].toString())
-                } else {
-                    onWS!!.onWS(eventName)
-                }
+        socket!!.on(eventName) { args ->
+            if (args[0] == null) {
+                onWS!!.onWS(eventName, args[0].toString())
+            } else {
+                onWS!!.onWS(eventName)
             }
-
-        })
+        }
 
 
     }
