@@ -21,6 +21,7 @@ class ItzamSocketIoPlugin(private val channel: MethodChannel) : MethodCallHandle
         }
     }
 
+
     private var ws: WS? = null
 
     init {

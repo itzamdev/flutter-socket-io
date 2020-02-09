@@ -53,7 +53,17 @@ class WS {
     }
 
     fun on(eventName: String) {
-        socket!!.on(eventName) { args -> onWS!!.onWS(eventName, args[0].toString()) }
+
+        socket!!.on(eventName) { args ->
+            {
+                if (args[0] != null) {
+                    onWS!!.onWS(eventName, args[0].toString())
+                } else {
+                    onWS!!.onWS(eventName, null);
+                }
+
+            }
+        }
     }
 
 
@@ -68,7 +78,7 @@ class WS {
 
 
     interface OnWS {
-        fun onWS(eventName: String, data: String)
+        fun onWS(eventName: String, data: String?)
     }
 
 
