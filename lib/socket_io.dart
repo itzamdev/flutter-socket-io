@@ -31,6 +31,11 @@ class SocketIO {
         print("incomming eventName: $eventName");
         final event = _events[eventName];
 
+        if (data == null) {
+          event(null);
+          return;
+        }
+
         if (Platform.isIOS) {
           event(data);
         } else {

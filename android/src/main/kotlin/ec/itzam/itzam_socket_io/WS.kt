@@ -59,7 +59,7 @@ class WS {
                 if (args[0] != null) {
                     onWS!!.onWS(eventName, args[0].toString())
                 } else {
-                    onWS!!.onWS(eventName, null);
+                    onWS!!.onWS(eventName);
                 }
 
             }
@@ -78,7 +78,8 @@ class WS {
 
 
     interface OnWS {
-        fun onWS(eventName: String, data: String?)
+        fun onWS(eventName: String, data: String)
+        fun onWS(eventName: String)
     }
 
 

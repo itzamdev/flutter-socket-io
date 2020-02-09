@@ -10,6 +10,16 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 
 class ItzamSocketIoPlugin(private val channel: MethodChannel) : MethodCallHandler, WS.OnWS {
 
+    override fun onWS(eventName: String) {
+        val handler = Handler(Looper.getMainLooper())
+
+        handler.post {
+            val arguments = HashMap<String, String>()
+            arguments.put("eventName", eventName)
+            channel.invokeMethod("incoming", arguments)
+        }
+    }
+
     override fun onWS(eventName: String, data: String) {
         val handler = Handler(Looper.getMainLooper())
 
