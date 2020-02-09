@@ -4,6 +4,7 @@ package ec.itzam.itzam_socket_io
 import android.util.Log
 import io.socket.client.IO
 import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import org.json.JSONException
 import java.lang.Exception
 import org.json.JSONObject
@@ -54,16 +55,15 @@ class WS {
 
     fun on(eventName: String) {
 
-        socket!!.on(eventName) { args ->
-            {
-                if (args[0] != null) {
-                    onWS!!.onWS(eventName, args[0].toString())
-                } else {
-                    onWS!!.onWS(eventName);
-                }
-
+        socket!!.on(eventName) {
+            if (it[0] == null) {
+                onWS!!.onWS(eventName, it[0].toString())
+            } else {
+                onWS!!.onWS(eventName)
             }
         }
+
+
     }
 
 
